@@ -1,0 +1,25 @@
+{
+  "name": "nowa-theme",
+  "version": "1.0.0",
+  "description": "An awesome nowa plugin",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "keywords": [
+    "nowa",
+    "webpack",
+    "theme"
+  ],
+  "author": "sunguo",
+  "license": "MIT",
+  "homepage": "",
+  "dependencies": {
+    "ejs": "^2.5.9",
+    "rimraf": "^2.6.2"
+  }
+}

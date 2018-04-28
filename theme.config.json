@@ -1,0 +1,12 @@
+[
+    {
+      "theme": "orange",
+      "default": true
+    },
+    {
+      "theme": "alipay"
+    },
+    {
+        "theme": "green"
+    }
+  ]
