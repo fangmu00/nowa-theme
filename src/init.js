@@ -16,6 +16,7 @@ const configRoot = path.join(__dirname, '../');
 let themes = null;
 
 const checkConfigJson = () => {
+  console.log('checkConfigJson');
   return existsFile(`${cwd}/theme.config.json`);
 }
 
@@ -24,90 +25,23 @@ const getConfigJson = () => {
   return JSON.parse(localThemes);
 }
 
-const makeConfigJson = () => {
-  if (!checkConfigJson()) {
-    themes = readFile(`${configRoot}/theme.config.json`);
-    themes = JSON.parse(themes);
-    writeFile(`${cwd}/theme.config.json`, JSON.stringify(themes, null, 4))
-  } else {
-    themes = getConfigJson();
-  }
+const createConfigJson = () => {
+  themes = readFile(`${configRoot}/theme.config.json`);
+  themes = JSON.parse(themes);
+  console.log(`Creating file: ${configRoot}/theme.config.json`);
+  writeFile(`${cwd}/theme.config.json`, JSON.stringify(themes, null, 4))
 }
 
-const replaceImportDefaultLess = (filePath, pageName, fileName, themeFileName) => {
+const createDefaultThemeTemp = () => {
+  const file = readFile(`${configRoot}/templete/colors.ejs`);
+  const themeFile = path.join(cwd, './src/theme');
 
-  try {
-    let str = readFile(filePath).toString();
-    if (str.indexOf(`./${fileName}.less`) !== -1) {
-      str = str.replace(`./${fileName}.less`, `./theme/${themeFileName}.less`);
-    } else {
-      themes.forEach((item) => {
-        const f = `./theme/theme-${item.theme}.less`
-        if (str.indexOf(f) !== -1) {
-          str = str.replace(f, `./theme/${themeFileName}.less`);
-        }
-      })
-    }
-    writeFile(filePath, str);
-  } catch (error) {
-    console.log(`Warning, page: ${pageName} executing failed`)
+  if (!existsFile(themeFile)) {
+    mkdir(themeFile)
   }
-}
 
-const makeAppTheme = () => {
-  const appPath = path.join(cwd, './src/app/');
-  const appThemePath = path.join(appPath, './theme');
-  if (!existsFile(appThemePath)) {
-    mkdir(appThemePath);
-  } else {
-    removeFile(appThemePath);
-    mkdir(appThemePath);
-  }
-  console.log(`Executing app....`);
-  themes.forEach((item) => {
-    const strLess = readFile(`${configRoot}/templete/theme-less.ejs`);
-    const strJs = readFile(`${configRoot}/templete/theme-js.ejs`);
-    const templateLess = ejs.compile(strLess.toString());
-    const templateJs = ejs.compile(strJs.toString());
-    const { theme } = item;
-
-    writeFile(`${appThemePath}/theme-${theme}.less`, templateLess({ color: item, index: '../app.less' }));
-    if (!item.default) {
-      writeFile(`${appThemePath}/theme-${theme}.js`, templateJs({ color: item }));
-    } else {
-      replaceImportDefaultLess(`${appPath}/app.js`, 'app', 'app', `theme-${theme}`, );
-    }
-
-  });
-}
-
-const makePageTheme = (pages) => {
-  pages.forEach((page) => {
-    const pagePath = path.join(cwd, `./src/pages/${page}`);
-    const pageThemePath = path.join(pagePath, './theme');
-    if (!existsFile(pageThemePath)) {
-      mkdir(pageThemePath)
-    } else {
-      removeFile(pageThemePath);
-      mkdir(pageThemePath);
-    }
-    console.log(`Executing page:${page}....`);
-    themes.forEach((item) => {
-      const strLess = readFile(`${configRoot}/templete/theme-less.ejs`);
-      const strJs = readFile(`${configRoot}/templete/theme-js.ejs`);
-      const templateLess = ejs.compile(strLess.toString());
-      const templateJs = ejs.compile(strJs.toString());
-      const { theme } = item;
-      const fileName = getDefaultPageFileName(page);
-      const themeFileName = `theme-${theme}`;
-      writeFile(`${pageThemePath}/${themeFileName}.less`, templateLess({ color: item, index: `../${fileName}.less` }));
-      if (!item.default) {
-        writeFile(`${pageThemePath}/${themeFileName}.js`, templateJs({ color: item }));
-      } else {
-        replaceImportDefaultLess(`${pagePath}/${fileName}.jsx`, page, fileName, themeFileName );
-      }
-    });
-  });
+  console.log(`Creating file: ${themeFile}/colors.ejs`);
+  writeFile(`${themeFile}/colors.ejs`, file.toString());
 }
 
 const checkDependent = () => {
@@ -115,23 +49,22 @@ const checkDependent = () => {
   pkg = JSON.parse(pkg);
   const { dependencies } = pkg;
   if (!dependencies['kuma-base']) {
-    npmInstall('tnpm', 'kuma-base',  cwd);
+    console.log('Installing: kuma-base');
+    npmInstall('tnpm', 'kuma-base', cwd);
   }
 
 }
 
 const init = (pages, all) => {
+  console.log('Runing theme init...');
   checkDependent();
-  makeConfigJson();
-  makeAppTheme();
-  if (all) {
-    makePageTheme(getAllPage(path.join(cwd, './src/pages')));
-  } else if (pages.length){
-    makePageTheme(pages)
-  }
-  console.log(`transfer success!`);
+  createConfigJson();
+  createDefaultThemeTemp();
 }
 
-module.exports = init;
+module.exports = {
+  init,
+  getConfigJson
+};
 
 

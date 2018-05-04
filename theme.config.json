@@ -1,12 +1,14 @@
-[
+{
+  "theme": [
     {
-      "theme": "orange",
+      "name": "orange",
       "default": true
     },
     {
-      "theme": "alipay"
+      "name": "alipay"
     },
     {
-        "theme": "green"
+      "name": "green"
     }
   ]
+}

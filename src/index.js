@@ -8,27 +8,33 @@
 'use strict';
 
 var pkg = require('../package.json');
-var init = require('./init');
+var { init } = require('./init');
 var build = require('./build');
-
-function list(val) {
-  return val.split(',');
-}
+var { server } = require('./server');
 
 module.exports = {
 
-  command: 'theme',
+  command: 'theme <type>',
 
   description: pkg.description,
 
-  options: [
-   [ '-p, --page <page>', 'which page to set theme', list],
-   [ '-a, --all', 'set theme all page']
-  ],
+  action: function(type) {
 
-  action: function(commond) {
-    const pages = commond.page ? commond.page : [];
-    const all = !!commond.all;
-    init(pages, all);
+    switch (type) {
+      case 'init':
+        init();
+        break;
+
+      case 'server':
+        server();
+        break;
+
+      case 'build':
+        build();
+        break;
+
+      default:
+        break;
+    }
   }
 };
