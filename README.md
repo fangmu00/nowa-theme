@@ -2,13 +2,14 @@
 
 [![NPM version](https://img.shields.io/npm/v/nowa-theme.svg?style=flat)](https://npmjs.org/package/nowa-theme)
 
-基于kuma-base增强nowa多主题方案， 无需引入多个主题less文件， 根据配置自动生成多主题文件。
+基于kuma-base增强nowa多主题方案。
 
 ---
 
 ## Feature
 
 - 多主题配置
+- 无需引入多个主题less文件
 
 ## Install
 
