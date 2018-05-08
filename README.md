@@ -62,6 +62,7 @@ $ nowa theme build
 ### 默认less模板文件 colors.ejs 内容
 ```less
 @import '~kuma-base/theme/<%= theme.name %>.less';
+@brand-logo: <%= theme.logo %>;
 // 可根据theme.config.json添加的自定义字段、添加逻辑代码, 也可新建多个模板文件。
 ```
 工具会将其转化为对应的less文件，在你需要它们的时候引入即可。
@@ -71,6 +72,9 @@ $ nowa theme build
   font-size: 14px;
   color: #333;
   background-color: @brand-primary;
+}
+.logo {
+  background: url(@brand-logo);
 }
 ```
 
