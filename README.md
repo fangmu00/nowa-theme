@@ -45,14 +45,17 @@ $ nowa theme build
   "theme": [
     {
       "name": "orange", // 主题名称
-      "default": true // 默认主题
+      "default": true, // 默认主题
+      "logo": "orange.jpg" // logo url地址
       ... // 配置其他自定义字段
     },
     {
-      "name": "alipay"
+      "name": "alipay",
+      "logo": "xxx.jpg"
     },
     {
-      "name": "green"
+      "name": "green",
+      "logo": "xxx.jpg"
     }
     ...// 自行添加其他主题
   ]
