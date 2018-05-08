@@ -2,13 +2,16 @@
   "theme": [
     {
       "name": "orange",
-      "default": true
+      "default": true,
+      "logo": "orange.jpg"
     },
     {
-      "name": "alipay"
+      "name": "alipay",
+      "logo": "alipay.jpg"
     },
     {
-      "name": "green"
+      "name": "green",
+      "logo": "green.jpg"
     }
   ]
 }
