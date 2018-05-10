@@ -2,7 +2,6 @@
     启动服务
     1.获取配置文件theme.config.json
     2.遍历配置文件对象，打包到对应主题out文件夹
-    toDo remove dist frist
 */
 const fs = require('fs');
 const path = require('path');
